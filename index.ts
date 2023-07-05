@@ -1,24 +1,21 @@
 import * as fs from 'fs';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import FormData from 'form-data';
-const dotenv = require('dotenv');
 import { file as tmpFile } from 'tmp-promise';
 
-// Load environment variables from .env file
-dotenv.config();
-
-// API_KEY will be loaded from the .env file
-const API_KEY = process.env.API_KEY;
-
 export const rembg = async ({
+  apiKey,
   inputImagePath,
-  onUploadProgress,
-  onDownloadProgress
+  onUploadProgress = console.log, // it will log every uploadProgress event by default
+  onDownloadProgress = console.log // it will log every uploadProgress event by default
 }: {
+    apiKey: string;
   inputImagePath: string;
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
   onDownloadProgress: (progressEvent: AxiosProgressEvent) => void;
 }) => {
+  if (!apiKey) throw new Error('API key is required');
+
   const url = "https://api.remove-background.ai/rmbg";
   const API_KEY_HEADER = "x-api-key";
 
@@ -31,7 +28,7 @@ export const rembg = async ({
     maxBodyLength: Infinity,
     url,
     headers: {
-      [API_KEY_HEADER]: API_KEY,
+      [API_KEY_HEADER]: apiKey,
       ...data.getHeaders()
     },
     data,
