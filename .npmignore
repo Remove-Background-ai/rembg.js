@@ -1,0 +1,6 @@
+.idea
+.vscode
+examples
+tsconfig.json
+index.ts
+media/
