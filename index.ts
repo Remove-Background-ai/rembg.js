@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import FormData from 'form-data';
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 import { file as tmpFile } from 'tmp-promise';
 
 // Load environment variables from .env file
@@ -10,7 +10,7 @@ dotenv.config();
 // API_KEY will be loaded from the .env file
 const API_KEY = process.env.API_KEY;
 
-export const rembg = async ({
+const rembg = async ({
   inputImagePath,
   onUploadProgress,
   onDownloadProgress

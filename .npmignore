@@ -4,3 +4,4 @@ examples
 tsconfig.json
 index.ts
 media/
+test/
