@@ -10,7 +10,7 @@ dotenv.config();
 // API_KEY will be loaded from the .env file
 const API_KEY = process.env.API_KEY;
 
-const rembg = async ({
+export const rembg = async ({
   inputImagePath,
   onUploadProgress,
   onDownloadProgress
