@@ -20,10 +20,16 @@ TODO
 ```typescript
 import rembg from "rembg.js";
 
-rembg('input.png').then(({ outputImagePath, cleanup }) => {
+// log upload and download progress
+const onDownloadProgress = console.log;
+const onUploadProgress = console.log;
+
+rembg({
+    inputImagePath: 'input.png',
+    onDownloadProgress,
+    onUploadProgress
+}).then(({ outputImagePath, cleanup }) => {
     console.log('path', outputImagePath);
-    // cleanup the temporary file
     cleanup();
-  }
-);
+});
 ```
