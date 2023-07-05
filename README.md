@@ -1,7 +1,6 @@
 # [www.remove-background.ai](https://www.remove-background.ai) API wrapper for Node.js
 
-
-<img src="https://github.com/xxxxx/rembg/raw/master/media/media/background-remove-preview.png" width="600px" height="400px" />
+<img src="https://github.com/Remove-Background-ai/rembg.js/blob/main/media/background-remove-preview.png" width="400px"  />
 
 
 Best and the **ONLY FREE** AI background removal for **node.js** , www.remove-background.ai API is extremly easy to use.
