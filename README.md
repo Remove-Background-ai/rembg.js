@@ -3,7 +3,7 @@
 <img src="https://github.com/Remove-Background-ai/rembg.js/blob/main/media/background-remove-preview.png" width="400px"  />
 
 
-Best and the **ONLY FREE** AI background removal for **node.js** , www.remove-background.ai API is extremly easy to use.
+Best and the **ONLY FREE** AI background removal for **node.js** , www.remove-background.ai API is extremely easy to use.
 
 
 ## Requirements
