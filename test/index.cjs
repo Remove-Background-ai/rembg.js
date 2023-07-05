@@ -1,14 +1,15 @@
-import rembg from '../dist/index.js';
+import { rembg } from '@remove-background-ai/rembg.js';
+
 
 // log upload and download progress
 const onDownloadProgress = console.log;
 const onUploadProgress = console.log;
 
 rembg({
-    inputImagePath: '../examples/input.png',
+    inputImagePath: './input.png',
     onDownloadProgress,
     onUploadProgress
 }).then(({ outputImagePath, cleanup }) => {
     console.log('path', outputImagePath);
-    cleanup();
+   // cleanup();
 });
