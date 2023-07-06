@@ -3,12 +3,11 @@
 <img src="https://github.com/Remove-Background-ai/rembg.js/blob/main/media/background-remove-preview.png" width="400px"  />
 
 
-Best and the **ONLY FREE** AI background removal for **node.js** , www.remove-background.ai API is extremely easy to use.
-
+A simple, **FREE** AI background removal tool for **Node.js**. Currently, this is **THE ONLY FREE** library available for personal usage from API. Check out our website at www.remove-background.ai for more details.
 
 ## Requirements
-Get your API key from the [www.remove-background.ai website](https://www.remove-background.ai/api-usage).
-PS: you can still use the API without key but it is very limited
+Get your **FREE** API Key from the https://www.remove-background.ai/api-usage
+PS: you can still use the API Keys without key but it is very limited
 
 ## Installation
 
