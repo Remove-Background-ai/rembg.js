@@ -14,7 +14,7 @@ export const rembg = async ({
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
   onDownloadProgress: (progressEvent: AxiosProgressEvent) => void;
 }) => {
-  if (!apiKey) throw new Error('API key is required');
+  if (!apiKey) console.error('WARNING: API key not provided, trials will be limited.');
 
   const url = "https://api.remove-background.ai/rmbg";
   const API_KEY_HEADER = "x-api-key";
@@ -42,9 +42,20 @@ export const rembg = async ({
     fs.writeFileSync(outputImagePath, response.data);
 
     return { outputImagePath, cleanup };
-  } catch (error) {
-    console.error(error);
-    return { outputImagePath: null, cleanup: null };
+  } catch (error: any) {
+
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      throw new Error(`${error.response.status} ${error.response.data.toString()}`);
+    } else if (error.request) {
+      // The request was made but no response was received
+      throw new Error(`No response received ${JSON.stringify(error.request)}`);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      throw new Error(`Request failed ${JSON.stringify(error.message)}`);
+    }
+
   }
 }
 

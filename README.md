@@ -8,6 +8,7 @@ Best and the **ONLY FREE** AI background removal for **node.js** , www.remove-ba
 
 ## Requirements
 Get your API key from the [www.remove-background.ai website](https://www.remove-background.ai/api-usage).
+PS: you can still use the API without key but it is very limited
 
 ## Installation
 
