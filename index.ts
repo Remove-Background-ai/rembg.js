@@ -50,10 +50,11 @@ export const rembg = async ({
       throw new Error(`${error.response.status} ${error.response.data.toString()}`);
     } else if (error.request) {
       // The request was made but no response was received
-      throw new Error(`No response received ${JSON.stringify(error.request)}`);
+      throw new Error(`${error.message}`);
+
     } else {
       // Something happened in setting up the request that triggered an Error
-      throw new Error(`Request failed ${JSON.stringify(error.message)}`);
+      throw new Error(`Request failed ${error.message}`);
     }
 
   }

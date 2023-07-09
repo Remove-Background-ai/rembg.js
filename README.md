@@ -18,6 +18,7 @@ npm i --save @remove-background-ai/rembg.js
 ## Library
 
 ```typescript
+// script.mjs file
 
 import  { rembg } from '@remove-background-ai/rembg.js';
 import dotenv from 'dotenv';
@@ -38,7 +39,7 @@ rembg({
     onUploadProgress
 }).then(({ outputImagePath, cleanup }) => {
     console.log('path', outputImagePath);
-    // if called, it will cleanup your removed background image
-    cleanup();
+    // if called, it will cleanup (remove from disk) your removed background image
+    // cleanup();
 });
 ```
