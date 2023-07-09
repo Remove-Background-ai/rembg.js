@@ -38,7 +38,7 @@ rembg({
     onDownloadProgress,
     onUploadProgress
 }).then(({ outputImagePath, cleanup }) => {
-    console.log('path', outputImagePath);
+    console.log(`✅🎉 background removed and saved under path=${outputImagePath}`);
     // if called, it will cleanup (remove from disk) your removed background image
     // cleanup();
 });

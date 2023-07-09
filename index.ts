@@ -14,7 +14,7 @@ export const rembg = async ({
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
   onDownloadProgress: (progressEvent: AxiosProgressEvent) => void;
 }) => {
-  if (!apiKey) console.error('WARNING: API key not provided, trials will be limited.');
+  if (!apiKey) console.error(' ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
 
   const url = "https://api.remove-background.ai/rmbg";
   const API_KEY_HEADER = "x-api-key";
@@ -47,14 +47,14 @@ export const rembg = async ({
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      throw new Error(`${error.response.status} ${error.response.data.toString()}`);
+      throw new Error(`❌ ${error.response.status} ${error.response.data.toString()}`);
     } else if (error.request) {
       // The request was made but no response was received
-      throw new Error(`${error.message}`);
+      throw new Error(`❌ ${error.message}`);
 
     } else {
       // Something happened in setting up the request that triggered an Error
-      throw new Error(`Request failed ${error.message}`);
+      throw new Error(`❌ Request failed ${error.message}`);
     }
 
   }
