@@ -2,17 +2,20 @@ import * as fs from 'fs';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import FormData from 'form-data';
 import { file as tmpFile } from 'tmp-promise';
+import { Buffer } from 'buffer';
 
 export const rembg = async ({
   apiKey,
   inputImagePath,
   onUploadProgress = console.log, // it will log every uploadProgress event by default
-  onDownloadProgress = console.log // it will log every uploadProgress event by default
+  onDownloadProgress = console.log, // it will log every uploadProgress event by default
+  returnBase64 = false, // by default, it won't return a Base64 string
 }: {
-    apiKey: string;
+  apiKey: string;
   inputImagePath: string;
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
   onDownloadProgress: (progressEvent: AxiosProgressEvent) => void;
+  returnBase64: boolean
 }) => {
   if (!apiKey) console.error(' ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
 
@@ -38,10 +41,15 @@ export const rembg = async ({
   } as AxiosRequestConfig<FormData>;
   try {
     const response = await axios.request(config);
-    const { path: outputImagePath, cleanup } = await tmpFile({ prefix: 'rembg-', postfix: '.png' });
-    fs.writeFileSync(outputImagePath, response.data);
-
-    return { outputImagePath, cleanup };
+    if (returnBase64) {
+      // Return a base64 string if returnBase64 is true
+      const base64Image = `data:image/png;base64,${Buffer.from(response.data).toString('base64')}`;
+      return { base64Image };
+    } else {
+      const { path: outputImagePath, cleanup } = await tmpFile({ prefix: 'rembg-', postfix: '.png' });
+      fs.writeFileSync(outputImagePath, response.data);
+      return { outputImagePath, cleanup };
+    }
   } catch (error: any) {
 
     if (error.response) {
