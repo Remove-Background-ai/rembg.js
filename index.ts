@@ -17,10 +17,10 @@ export const rembg = async ({
   onDownloadProgress: (progressEvent: AxiosProgressEvent) => void;
   returnBase64: boolean
 }) => {
-  if (!apiKey) console.error(' ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
+  if (!apiKey) throw new Error(' ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
 
   const url = "https://api.remove-background.ai/rmbg";
-  const API_KEY_HEADER = "c2c299ab-39c4-47c7-b447-6c2a334ab806";
+  const API_KEY_HEADER = "x-api-key";
 
   const data = new FormData();
   data.append('image', fs.createReadStream(inputImagePath));
