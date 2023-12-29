@@ -72,7 +72,7 @@ rembg({
 });
 ```
 
-## Usage of `mask` flag
+## Usage of `returnMask` flag
 
 The library provides an option to return a mask of the image instead of the processed image. This is controlled by the `returnMask` parameter. 
 When set to `true`, the function returns a mask. By default (if omitted), this parameter is set to `false`.
