@@ -71,3 +71,31 @@ rembg({
     console.log(`✅🎉 background removed ${base64Image}`);
 });
 ```
+
+## Usage of `mask` flag
+
+The library provides an option to return a mask of the image instead of the processed image. This is controlled by the `returnMask` parameter. 
+When set to `true`, the function returns a mask. By default (if omitted), this parameter is set to `false`.
+
+### Code Snippet
+
+```typescript
+rembg({
+    apiKey: API_KEY,
+    inputImagePath: './input.jpg',
+    onDownloadProgress,
+    onUploadProgress,
+    returnMask: true, // <----- Set to true to get the mask of the image
+    returnBase64: true // Set to true to receive the result as a Base64 string
+}).then(({ base64Image }) => {
+    console.log(`✅🎉 Mask retrieved: ${base64Image}`);
+});
+```
+
+Below is the generated mask image using the `rembg` function with the mask option enabled:
+
+![Generated Mask](media/generated_mask.png)
+
+This image demonstrates the result of the mask generation process. The mask typically highlights the main subject of the image with the background removed or made transparent.
+
+This is very useful to work with `Stable Diffusion` for perfect area of inpainting, for example.

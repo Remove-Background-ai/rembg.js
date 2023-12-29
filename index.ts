@@ -4,17 +4,33 @@ import FormData from 'form-data';
 import { file as tmpFile } from 'tmp-promise';
 import { Buffer } from 'buffer';
 
+/**
+ * Removes the background from an image using the remove-background.ai API.
+ * 
+ * @param apiKey - The API key for remove-background.ai.
+ * @param inputImagePath - The path to the input image file.
+ * @param onUploadProgress - A callback function to handle upload progress events. Defaults to console.log.
+ * @param onDownloadProgress - A callback function to handle download progress events. Defaults to console.log.
+ * @param returnMask - Whether to return a mask instead of the image. Defaults to false.
+ * @param returnBase64 - Whether to return the output image as a Base64 string. Defaults to false.
+ * @returns If returnBase64 is true, returns an object with the base64Image property containing the Base64 string of the output image.
+ *          If returnBase64 is false, returns an object with the outputImagePath property containing the path to the output image file,
+ *          and the cleanup function to delete the temporary file.
+ * @throws Throws an error if the API key is not provided or if the request fails.
+ */
 export const rembg = async ({
   apiKey,
   inputImagePath,
   onUploadProgress = console.log, // it will log every uploadProgress event by default
   onDownloadProgress = console.log, // it will log every uploadProgress event by default
+  returnMask = false, // by default, it won't return a mask, unless you set it to true it will return a mask instead
   returnBase64 = false, // by default, it won't return a Base64 string
 }: {
   apiKey: string;
   inputImagePath: string;
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
   onDownloadProgress: (progressEvent: AxiosProgressEvent) => void;
+  returnMask?: boolean;
   returnBase64: boolean
 }) => {
   if (!apiKey) throw new Error(' ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
@@ -24,7 +40,9 @@ export const rembg = async ({
 
   const data = new FormData();
   data.append('image', fs.createReadStream(inputImagePath));
-
+  if(returnMask === true) {
+    data.append('mask', 'true');
+  }
 
   const config = {
     method: 'post',

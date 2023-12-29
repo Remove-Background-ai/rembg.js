@@ -1,7 +1,7 @@
 import axios from "axios";
 import MockAdapter from 'axios-mock-adapter';
 import * as tmp from 'tmp-promise';
-
+const FormData = require('form-data');
 const { rembg } = require('./../index');
 
 const mockAxios = new MockAdapter(axios);
@@ -146,6 +146,36 @@ describe('rembg', () => {
         'x-api-key': 'your-api-key',
       }),
     }));
+  });
+  it('should send a request with the mask field in the form data', async () => {
+    // Spy on FormData.prototype.append
+    const appendSpy = jest.spyOn(FormData.prototype, 'append');
+
+    // Mock the axios request
+    const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+      data: Buffer.from('image data'),
+    });
+
+    await rembg({
+      apiKey: 'your-api-key',
+      inputImagePath: 'path/to/image.png',
+      onUploadProgress: () => {},
+      onDownloadProgress: () => {},
+      returnMask: true,
+      returnBase64: false
+    });
+
+    // Check if FormData was called with the 'mask' field
+    expect(appendSpy).toHaveBeenCalledWith('image', expect.anything());
+    expect(appendSpy).toHaveBeenCalledWith('mask', 'true');
+
+    // Check axiosMock to be called with FormData
+    expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.any(FormData),
+    }));
+
+    // Restore mocks
+    jest.restoreAllMocks();
   });
 
 });
