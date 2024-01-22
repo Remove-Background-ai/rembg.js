@@ -35,7 +35,7 @@ export const rembg = async ({
 }) => {
   if (!apiKey) throw new Error(' ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
 
-  const url = "https://api.remove-background.ai/rmbg";
+  const url = "https://api.rembg.com/rmbg";
   const API_KEY_HEADER = "x-api-key";
 
   const data = new FormData();

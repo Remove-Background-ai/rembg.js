@@ -1,12 +1,12 @@
-# [www.remove-background.ai](https://www.remove-background.ai) API wrapper for Node.js
+# [www.rembg.com](https://www.rembg.com) API wrapper for Node.js
 
 <img src="https://github.com/Remove-Background-ai/rembg.js/blob/main/media/background-remove-preview.png" width="400px"  />
 
 
-A simple, **FREE** AI background removal tool for **Node.js**. Currently, this is **THE ONLY FREE** library available for personal usage from API. Check out our website at www.remove-background.ai for more details.
+A simple, **FREE** AI background removal tool for **Node.js**. Currently, this is **THE ONLY FREE** library available for personal usage from API. Check out our website at www.rembg.com for more details.
 
 ## Requirements
-Get your **FREE** API Key from the https://www.remove-background.ai/api-usage
+Get your **FREE** API Key from the https://www.rembg.com/api-usage
 PS: you can still use the API Keys without key but it is very limited
 
 ## Installation
