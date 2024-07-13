@@ -48,7 +48,7 @@ rembg({
 ```
 
 
-## Base64 example
+## Base64 return type example
 
 if you wish to return a Base64 instead of temporary URL you can use retrunBase64 parameter:
 
