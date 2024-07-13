@@ -19,12 +19,13 @@ jest.mock('fs', () => ({
 describe('rembg', () => {
   beforeEach(() => {
     mockAxios.reset();
+    jest.clearAllMocks();
   });
 
   it('should throw an error if apiKey is not provided', async () => {
     await expect(rembg({
       apiKey: '',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
     })).rejects.toThrowError('⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
   });
 
@@ -36,7 +37,7 @@ describe('rembg', () => {
 
     const result = await rembg({
       apiKey: 'your-api-key',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
       returnBase64: true,
     });
 
@@ -57,7 +58,7 @@ describe('rembg', () => {
  
     const result = await rembg({
       apiKey: 'your-api-key',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
       returnBase64: false,
     });
 
@@ -86,7 +87,7 @@ describe('rembg', () => {
 
     await expect(rembg({
       apiKey: 'your-api-key',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
     })).rejects.toThrowError('❌ Request failed');
 
     expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -105,7 +106,7 @@ describe('rembg', () => {
 
     await expect(rembg({
       apiKey: 'your-api-key',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
     })).rejects.toThrowError('❌ 500 Internal Server Error');
 
     expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -121,7 +122,7 @@ describe('rembg', () => {
 
     await expect(rembg({
       apiKey: 'your-api-key',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
     })).rejects.toThrowError();
 
     expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -138,7 +139,7 @@ describe('rembg', () => {
 
     await rembg({
       apiKey: 'your-api-key',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
     });
 
     expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -158,7 +159,7 @@ describe('rembg', () => {
 
     await rembg({
       apiKey: 'your-api-key',
-      inputImagePath: 'path/to/image.png',
+      inputImage: 'path/to/image.png',
       onUploadProgress: () => {},
       onDownloadProgress: () => {},
       returnMask: true,
@@ -177,5 +178,100 @@ describe('rembg', () => {
     // Restore mocks
     jest.restoreAllMocks();
   });
+
+  it('should handle buffer input', async () => {
+    const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+      data: Buffer.from('processed image data'),
+    });
+
+    const inputBuffer = Buffer.from('input image data');
+
+    // Mock FormData
+    const mockAppend = jest.fn();
+    jest.spyOn(FormData.prototype, 'append').mockImplementation(mockAppend);
+
+    const result = await rembg({
+      apiKey: 'your-api-key',
+      inputImage: inputBuffer,
+    });
+
+    expect(result).toEqual({
+      outputImagePath: 'path/to/output.png',
+      cleanup: expect.any(Function),
+    });
+
+    expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.any(FormData),
+    }));
+
+    // Check if the FormData.append was called with the correct arguments
+    expect(mockAppend).toHaveBeenCalledWith('image', inputBuffer, { filename: 'image.png' });
+
+
+    axiosMock.mockRestore();
+  });
+
+
+  // New tests for base64 input
+  it('should handle base64 input', async () => {
+    const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+      data: Buffer.from('processed image data'),
+    });
+
+    const base64Input = { base64: 'aW5wdXQgaW1hZ2UgZGF0YQ==' }; // "input image data" in base64
+
+    const result = await rembg({
+      apiKey: 'your-api-key',
+      inputImage: base64Input,
+    });
+
+    expect(result).toEqual({
+      outputImagePath: 'path/to/output.png',
+      cleanup: expect.any(Function),
+    });
+
+    expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.any(FormData),
+    }));
+
+    // Check if the FormData was created with the buffer from base64
+    const formDataAppendSpy = jest.spyOn(FormData.prototype, 'append');
+    expect(formDataAppendSpy).toHaveBeenCalledWith('image', expect.any(Buffer), { filename: 'image.png' });
+
+    axiosMock.mockRestore();
+    formDataAppendSpy.mockRestore();
+  });
+
+  // Test for invalid input type
+  it('should throw an error for invalid input type', async () => {
+    await expect(rembg({
+      apiKey: 'your-api-key',
+      inputImage: 123, // Invalid input type
+    })).rejects.toThrowError('Invalid input type. Must be a file path, Buffer, or an object with a base64 property.');
+  });
+
+  // Update existing tests to use 'input' instead of 'inputImage'
+  it('should return base64 image if returnBase64 is true', async () => {
+    const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+      data: Buffer.from('image data'),
+    });
+
+    const result = await rembg({
+      apiKey: 'your-api-key',
+      inputImage: 'path/to/image.png',
+      returnBase64: true,
+    });
+
+    expect(result).toEqual({
+      base64Image: 'data:image/png;base64,aW1hZ2UgZGF0YQ==',
+    });
+
+    expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
+      responseType: 'arraybuffer',
+    }));
+
+    axiosMock.mockRestore();
+  });
+
 
 });

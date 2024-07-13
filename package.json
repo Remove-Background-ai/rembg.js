@@ -1,6 +1,6 @@
 {
   "name": "@remove-background-ai/rembg.js",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "A simple wrapper for the https://www.rembg.com API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
