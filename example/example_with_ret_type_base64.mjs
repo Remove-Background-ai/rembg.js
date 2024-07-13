@@ -10,8 +10,8 @@ const onDownloadProgress = console.log;
 const onUploadProgress = console.log;
 
 rembg({
-    // apiKey: API_KEY,
-    inputImagePath: './input.jpg',
+    apiKey: API_KEY,
+    inputImage: './input.jpg',
     onDownloadProgress,
     onUploadProgress,
     returnBase64: true

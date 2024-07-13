@@ -17,6 +17,9 @@ npm i --save @remove-background-ai/rembg.js
 
 ## Library
 
+inputImage can be one of these:
+`string | Buffer | { base64: string };`
+
 ```typescript
 // script.mjs file
 
@@ -34,7 +37,7 @@ const onUploadProgress = console.log;
 
 rembg({
     apiKey: API_KEY,
-    inputImagePath: './input.png',
+    inputImage: './input.png',
     onDownloadProgress,
     onUploadProgress
 }).then(({ outputImagePath, cleanup }) => {
@@ -45,7 +48,7 @@ rembg({
 ```
 
 
-## Base64 example
+## Base64 return type example
 
 if you wish to return a Base64 instead of temporary URL you can use retrunBase64 parameter:
 
@@ -62,8 +65,36 @@ const onDownloadProgress = console.log;
 const onUploadProgress = console.log;
 
 rembg({
-    // apiKey: API_KEY,
-    inputImagePath: './input.png',
+    apiKey: API_KEY,
+    inputImage: './input.png',
+    onDownloadProgress,
+    onUploadProgress,
+    returnBase64: true
+}).then(({ base64Image }) => {
+    console.log(`✅🎉 background removed ${base64Image}`);
+});
+```
+
+## Input Image as Base64 or Buffer
+
+Since version 1.1.8, the rembg function can accept an input image as a Buffer or Base64 object. Below is a quick demonstration:
+
+```typescript
+import { rembg } from '../dist/index.js';
+import dotenv from 'dotenv';
+// Load environment variables from .env file
+dotenv.config();
+
+const base64Input = 'data:image/png;base64,/9j/4AAQSkZJRgABAQEASABIAAD/.....etc'
+// API_KEY will be loaded from the .env file
+const API_KEY = process.env.API_KEY;
+// log upload and download progress
+const onDownloadProgress = console.log;
+const onUploadProgress = console.log;
+
+rembg({
+    apiKey: API_KEY,
+    inputImage: {base64: base64Input}, // or simply an imageBuffer
     onDownloadProgress,
     onUploadProgress,
     returnBase64: true
@@ -82,7 +113,7 @@ When set to `true`, the function returns a mask. By default (if omitted), this p
 ```typescript
 rembg({
     apiKey: API_KEY,
-    inputImagePath: './input.jpg',
+    inputImage: './input.jpg',
     onDownloadProgress,
     onUploadProgress,
     returnMask: true, // <----- Set to true to get the mask of the image
