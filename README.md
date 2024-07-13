@@ -75,9 +75,9 @@ rembg({
 });
 ```
 
-## Input image as Based64 or Buffer example
+## Input Image as Base64 or Buffer
 
-Since V1.1.8 the rembg function can take a input image as Buffer or Base64 Object, below is a quick demonstration:
+Since version 1.1.8, the rembg function can accept an input image as a Buffer or Base64 object. Below is a quick demonstration:
 
 ```typescript
 import { rembg } from '../dist/index.js';
