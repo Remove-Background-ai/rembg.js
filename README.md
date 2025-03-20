@@ -5,6 +5,11 @@
 
 A simple, **FREE** AI background removal tool for **Node.js**. Currently, this is **THE ONLY FREE** library available for personal usage from API. Check out our website at www.rembg.com for more details.
 
+
+## 🚨 Minimum Node.js Version 🚨
+To use **@remove-background-ai/rembg.js**, you **must** have Node.js **v18.17.0 or higher** installed.
+
+
 ## Requirements
 Get your **FREE** API Key from the https://www.rembg.com/api-usage
 PS: you can still use the API Keys without key but it is very limited
