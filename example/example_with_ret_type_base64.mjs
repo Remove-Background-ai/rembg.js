@@ -14,7 +14,10 @@ rembg({
     inputImage: './input.jpg',
     onDownloadProgress,
     onUploadProgress,
-    returnBase64: true
+    options: {
+        returnBase64: true
+    }
+
 }).then(({ base64Image }) => {
     console.log(`✅🎉 background removed ${base64Image}`);
 });

@@ -38,7 +38,9 @@ describe('rembg', () => {
     const result = await rembg({
       apiKey: 'your-api-key',
       inputImage: 'path/to/image.png',
-      returnBase64: true,
+      options: {
+        returnBase64: true,
+      },
     });
 
     expect(result).toEqual({
@@ -59,7 +61,9 @@ describe('rembg', () => {
     const result = await rembg({
       apiKey: 'your-api-key',
       inputImage: 'path/to/image.png',
-      returnBase64: false,
+      options: {
+        returnBase64: false,
+      },
     });
 
     expect(result).toEqual({
@@ -162,8 +166,10 @@ describe('rembg', () => {
       inputImage: 'path/to/image.png',
       onUploadProgress: () => {},
       onDownloadProgress: () => {},
-      returnMask: true,
-      returnBase64: false
+      options: {
+        returnMask: true,
+        returnBase64: false
+      },
     });
 
     // Check if FormData was called with the 'mask' field
@@ -236,7 +242,11 @@ describe('rembg', () => {
 
     // Check if the FormData was created with the buffer from base64
     const formDataAppendSpy = jest.spyOn(FormData.prototype, 'append');
-    expect(formDataAppendSpy).toHaveBeenCalledWith('image', expect.any(Buffer), { filename: 'image.png' });
+    expect(formDataAppendSpy).toHaveBeenCalledWith(
+      'image', 
+      expect.any(Buffer), 
+      { filename: 'image.png', contentType: "image/png"},
+    );
 
     axiosMock.mockRestore();
     formDataAppendSpy.mockRestore();
@@ -259,7 +269,10 @@ describe('rembg', () => {
     const result = await rembg({
       apiKey: 'your-api-key',
       inputImage: 'path/to/image.png',
-      returnBase64: true,
+      options: {
+        returnBase64: true,
+      },
+
     });
 
     expect(result).toEqual({
