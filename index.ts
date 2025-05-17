@@ -7,7 +7,7 @@ import { Buffer } from 'buffer';
 type InputType = string | Buffer | { base64: string };
 type Options = {
   returnMask?: boolean;
-  returnBase64?: boolean, // by default, it won't return a Base64 string
+  returnBase64?: boolean; // by default, it won't return a Base64 string
   w: number;
   h: number;
   exact_resize?: boolean;
