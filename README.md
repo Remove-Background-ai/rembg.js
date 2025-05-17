@@ -74,7 +74,9 @@ rembg({
     inputImage: './input.png',
     onDownloadProgress,
     onUploadProgress,
-    returnBase64: true
+    options: {
+        returnBase64: true
+    }
 }).then(({ base64Image }) => {
     console.log(`✅🎉 background removed ${base64Image}`);
 });
@@ -102,7 +104,9 @@ rembg({
     inputImage: {base64: base64Input}, // or simply an imageBuffer
     onDownloadProgress,
     onUploadProgress,
-    returnBase64: true
+    options: {
+        returnBase64: true
+    }
 }).then(({ base64Image }) => {
     console.log(`✅🎉 background removed ${base64Image}`);
 });
@@ -121,8 +125,11 @@ rembg({
     inputImage: './input.jpg',
     onDownloadProgress,
     onUploadProgress,
-    returnMask: true, // <----- Set to true to get the mask of the image
-    returnBase64: true // Set to true to receive the result as a Base64 string
+    options: {
+        returnMask: true, // <----- Set to true to get the mask of the image
+        returnBase64: true // Set to true to receive the result as a Base64 string
+    }
+
 }).then(({ base64Image }) => {
     console.log(`✅🎉 Mask retrieved: ${base64Image}`);
 });
@@ -135,3 +142,27 @@ Below is the generated mask image using the `rembg` function with the mask optio
 This image demonstrates the result of the mask generation process. The mask typically highlights the main subject of the image with the background removed or made transparent.
 
 This is very useful to work with `Stable Diffusion` for perfect area of inpainting, for example.
+
+
+## Remove Background and Resize
+
+
+### Code Snippet
+
+```typescript
+rembg({
+    apiKey: API_KEY,
+    inputImage: './input.jpg',
+    onDownloadProgress,
+    onUploadProgress,
+    options: {
+        w: 1000, 
+        h: 760 // When both `w` and `h` are provided, RemBG will find the best dimensions that fit within the requested width and height while preserving the aspect ratio. 
+            // If you want to guarantee the exact size, set `exact_resize: true`.
+        // exact_resize: true !!! be careful it can cause distortion !!!
+    }
+
+}).then(({ base64Image }) => {
+    console.log(`✅🎉 Mask retrieved: ${base64Image}`);
+});
+```

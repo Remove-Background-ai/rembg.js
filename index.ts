@@ -5,16 +5,26 @@ import { file as tmpFile } from 'tmp-promise';
 import { Buffer } from 'buffer';
 
 type InputType = string | Buffer | { base64: string };
-
+type Options = {
+  returnMask?: boolean;
+  returnBase64?: boolean, // by default, it won't return a Base64 string
+  w: number;
+  h: number;
+  exact_resize?: boolean;
+}
 /**
  * Removes the background from an image using the rembg.com API.
  * 
  * @param apiKey - The API key for rembg.com.
- * @param inputImage - file path, Buffer, or an object with a base64 property.
+ * @param inputImage - file path, Buffer, or an object with a { base64: string } property.
  * @param onUploadProgress - A callback function to handle upload progress events. Defaults to console.log.
  * @param onDownloadProgress - A callback function to handle download progress events. Defaults to console.log.
- * @param returnMask - Whether to return a mask instead of the image. Defaults to false.
- * @param returnBase64 - Whether to return the output image as a Base64 string. Defaults to false.
+ * @param Options - set of options for image Post processing.
+ * @param options.returnMask - If true, returns the alpha-Matte (mask) image instead of the image.
+ * @param options.returnBase64 - If true, returns the output image as a Base64 string instead of saving it to a file.
+ * @param options.w - The width of the output image.
+ * @param options.h - The height of the output image.
+ * @param options.exact_resize - If true, the output image will be resized to the specified width and height.
  * @returns If returnBase64 is true, returns an object with the base64Image property containing the Base64 string of the output image.
  *          If returnBase64 is false, returns an object with the outputImagePath property containing the path to the output image file,
  *          and the cleanup function to delete the temporary file.
@@ -23,19 +33,25 @@ type InputType = string | Buffer | { base64: string };
 export const rembg = async ({
   apiKey,
   inputImage,
+  options,
   onUploadProgress = console.log, // it will log every uploadProgress event by default
   onDownloadProgress = console.log, // it will log every uploadProgress event by default
-  returnMask = false, // by default, it won't return a mask, unless you set it to true it will return a mask instead
-  returnBase64 = false, // by default, it won't return a Base64 string
 }: {
   apiKey: string;
   inputImage: InputType;
+  options?: Options;
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
   onDownloadProgress: (progressEvent: AxiosProgressEvent) => void;
-  returnMask?: boolean;
-  returnBase64: boolean
 }) => {
   if (!apiKey) throw new Error(' ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️: API key not provided, trials will be very limited.');
+
+  const { 
+    returnMask = false, 
+    returnBase64 = false,
+    w = 0, 
+    h = 0, 
+    exact_resize = false 
+  } = options || {};
 
   const url = "https://api.rembg.com/rmbg";
   const API_KEY_HEADER = "x-api-key";
@@ -66,9 +82,11 @@ export const rembg = async ({
   }
 
 
-  if(returnMask === true) {
-    data.append('mask', 'true');
-  }
+  data.append('exact_resize', exact_resize.toString());
+  data.append('w', w);
+  data.append('h', h);
+  data.append('mask', returnMask.toString());
+  data.append('return_base64', returnBase64.toString());
 
   const config = {
     method: 'post',
