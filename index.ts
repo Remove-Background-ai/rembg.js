@@ -19,7 +19,7 @@ type Options = {
  * @param inputImage - file path, Buffer, or an object with a { base64: string } property.
  * @param onUploadProgress - A callback function to handle upload progress events. Defaults to console.log.
  * @param onDownloadProgress - A callback function to handle download progress events. Defaults to console.log.
- * @param Options - set of options for image Post processing.
+ * @param options - set of options for image Post processing.
  * @param options.returnMask - If true, returns the alpha-Matte (mask) image instead of the image.
  * @param options.returnBase64 - If true, returns the output image as a Base64 string instead of saving it to a file.
  * @param options.w - The width of the output image.
