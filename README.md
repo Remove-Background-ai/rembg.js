@@ -20,6 +20,21 @@ PS: you can still use the API Keys without key but it is very limited
 npm i --save @remove-background-ai/rembg.js
 ```
 
+## API reference
+| Parameter                 | Type(s)                                          | Required | Default | Notes                                                  |
+| ------------------------- | ------------------------------------------------ | -------- | ------- | ------------------------------------------------------ |
+| **apiKey**                | `string`                                         | ✔︎       | —       | Rembg API key (free tier available).                   |
+| **inputImage**            | `string` <br> `Buffer` <br> `{ base64: string }` | ✔︎       | —       | Image path, buffer or base-64 wrapper. ([npm][1])      |
+| **onDownloadProgress**    | `(AxiosProgressEvent)=>void`                     | –        | —       | Called repeatedly while result is streamed. ([npm][1]) |
+| **onUploadProgress**      | `(AxiosProgressEvent)=>void`                     | –        | —       | Called repeatedly while upload is streamed. ([npm][1]) |
+| **options.returnBase64**  | `boolean`                                        | –        | `false` | Return base-64 instead of temp file. ([npm][1])        |
+| **options.returnMask**    | `boolean`                                        | –        | `false` | Return alpha-mask image only. ([npm][1])               |
+| **options.w**             | `number`                                         | –        | —       | Target width (keeps aspect). ([npm][1])                |
+| **options.h**             | `number`                                         | –        | —       | Target height (keeps aspect). ([npm][1])               |
+| **options.exact\_resize** | `boolean`                                        | –        | `false` | Force exact `w × h` (can distort). ([npm][1])          |
+
+[1]: https://www.npmjs.com/package/%40remove-background-ai/rembg.js "@remove-background-ai/rembg.js - npm"
+
 ## Library
 
 inputImage can be one of these:
