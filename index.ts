@@ -11,7 +11,9 @@ type Options = {
   w: number;
   h: number;
   exact_resize?: boolean;
+  format?: "png" | "PNG" | "webp" | "WEBP";
 }
+const D_FORMAT = 'WEBP'
 /**
  * Removes the background from an image using the rembg.com API.
  * 
@@ -25,6 +27,7 @@ type Options = {
  * @param options.w - The width of the output image.
  * @param options.h - The height of the output image.
  * @param options.exact_resize - If true, the output image will be resized to the specified width and height.
+ * @param options.format - format the image to target format, by default it is WEBP.
  * @returns If returnBase64 is true, returns an object with the base64Image property containing the Base64 string of the output image.
  *          If returnBase64 is false, returns an object with the outputImagePath property containing the path to the output image file,
  *          and the cleanup function to delete the temporary file.
@@ -87,6 +90,10 @@ export const rembg = async ({
   data.append('h', h);
   data.append('mask', returnMask.toString());
   data.append('return_base64', returnBase64.toString());
+  const format = options?.format
+  if(format && format.toLowerCase() === "png" || format?.toLowerCase() === "webp") {
+    data.append('format', options?.format)
+  }
 
   const config = {
     method: 'post',
@@ -108,7 +115,7 @@ export const rembg = async ({
       const base64Image = `data:image/png;base64,${Buffer.from(response.data).toString('base64')}`;
       return { base64Image };
     } else {
-      const { path: outputImagePath, cleanup } = await tmpFile({ prefix: 'rembg-', postfix: '.png' });
+      const { path: outputImagePath, cleanup } = await tmpFile({ prefix: 'rembg-', postfix: `.${options?.format || D_FORMAT}` });
       fs.writeFileSync(outputImagePath, response.data);
       return { outputImagePath, cleanup };
     }
