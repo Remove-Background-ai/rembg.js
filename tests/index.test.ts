@@ -63,6 +63,7 @@ describe('rembg', () => {
       inputImage: 'path/to/image.png',
       options: {
         returnBase64: false,
+        format: "png"
       },
     });
 
@@ -82,6 +83,69 @@ describe('rembg', () => {
     axiosMock.mockRestore();
 
   });
+
+  it('should return the right format=WEBP', async () => {
+    // Mock the axios request
+    const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+      data: Buffer.from('image data'),
+    });
+ 
+    const result = await rembg({
+      apiKey: 'your-api-key',
+      inputImage: 'path/to/image.png',
+      options: {
+        returnBase64: false,
+        // format: "png"  no format selected => default to WEBP
+      },
+    });
+
+    expect(result).toEqual({
+      outputImagePath: 'path/to/output.png',
+      cleanup: expect.any(Function),
+    });
+
+    expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
+      responseType: 'arraybuffer',
+    }));
+
+    expect(tmp.file).toHaveBeenCalledWith(expect.objectContaining({
+      prefix: 'rembg-',
+      postfix: '.WEBP',
+    }));
+    axiosMock.mockRestore();
+  });
+
+  it('should return the right format=PNG', async () => {
+    // Mock the axios request
+    const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+      data: Buffer.from('image data'),
+    });
+ 
+    const result = await rembg({
+      apiKey: 'your-api-key',
+      inputImage: 'path/to/image.png',
+      options: {
+        returnBase64: false,
+        format: 'PNG'
+      },
+    });
+
+    expect(result).toEqual({
+      outputImagePath: 'path/to/output.png',
+      cleanup: expect.any(Function),
+    });
+
+    expect(axiosMock).toHaveBeenCalledWith(expect.objectContaining({
+      responseType: 'arraybuffer',
+    }));
+
+    expect(tmp.file).toHaveBeenCalledWith(expect.objectContaining({
+      prefix: 'rembg-',
+      postfix: '.PNG',
+    }));
+    axiosMock.mockRestore();
+  });
+
 
   it('should throw an error if the request fails', async () => {
     // Mock the axios request

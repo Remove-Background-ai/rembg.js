@@ -13,7 +13,8 @@ rembg({
     apiKey: API_KEY,
     inputImage: './input.jpg',
     options: {
-        returnBase64: true,
+        format: "png" // by default it is a WEBP! because it works for most people!
+        //returnBase64: true,
         //returnMask: false,
         //h: 300,
         //w: 300,
@@ -21,9 +22,9 @@ rembg({
     },
     onDownloadProgress,
     onUploadProgress
-}).then(({ /*outputImagePath,*/ base64Image, cleanup }) => {
+}).then(({ outputImagePath, cleanup }) => {
     // console.log(`✅🎉 background removed and saved under path=${outputImagePath}`);
-    console.log(`✅🎉 background removed and received as Base64=${base64Image}`);
+    console.log(`✅🎉 background is removed and it is saved under this path=${outputImagePath}`);
     // if called, it will cleanup your removed background image
-    // cleanup();
+    cleanup();
 });

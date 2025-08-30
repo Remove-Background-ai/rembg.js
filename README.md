@@ -27,6 +27,7 @@ npm i --save @remove-background-ai/rembg.js
 | **inputImage**            | `string` <br> `Buffer` <br> `{ base64: string }` | ✔︎       | —       | Image path, buffer or base-64 wrapper. ([npm][1])      |
 | **onDownloadProgress**    | `(AxiosProgressEvent)=>void`                     | –        | —       | Called repeatedly while result is streamed. ([npm][1]) |
 | **onUploadProgress**      | `(AxiosProgressEvent)=>void`                     | –        | —       | Called repeatedly while upload is streamed. ([npm][1]) |
+| **options.format**        | `webp (default)`  <br> `png`                     | –        | —       | Encoding format, by default server returns WEBP image. | Format. ([npm][1])        |
 | **options.returnBase64**  | `boolean`                                        | –        | `false` | Return base-64 instead of temp file. ([npm][1])        |
 | **options.returnMask**    | `boolean`                                        | –        | `false` | Return alpha-mask image only. ([npm][1])               |
 | **options.w**             | `number`                                         | –        | —       | Target width (keeps aspect). ([npm][1])                |
@@ -91,6 +92,7 @@ rembg({
     onUploadProgress,
     options: {
         returnBase64: true
+        format: 'png' // or webp
     }
 }).then(({ base64Image }) => {
     console.log(`✅🎉 background removed ${base64Image}`);
