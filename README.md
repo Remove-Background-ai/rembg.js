@@ -27,7 +27,7 @@ npm i --save @remove-background-ai/rembg.js
 | **inputImage**            | `string` <br> `Buffer` <br> `{ base64: string }` | ✔︎       | —       | Image path, buffer or base-64 wrapper. ([npm][1])      |
 | **onDownloadProgress**    | `(AxiosProgressEvent)=>void`                     | –        | —       | Called repeatedly while result is streamed. ([npm][1]) |
 | **onUploadProgress**      | `(AxiosProgressEvent)=>void`                     | –        | —       | Called repeatedly while upload is streamed. ([npm][1]) |
-| **options.format**        | `webp (default)`  <br> `png`                     | –        | —       | Encoding format, by default server returns WEBP image. | Format. ([npm][1])        |
+| **options.format**        | `webp (default)`  <br> `png`                     | –        | `webp`  | Encoding format, by default server returns WEBP image. | Format. ([npm][1])        |
 | **options.returnBase64**  | `boolean`                                        | –        | `false` | Return base-64 instead of temp file. ([npm][1])        |
 | **options.returnMask**    | `boolean`                                        | –        | `false` | Return alpha-mask image only. ([npm][1])               |
 | **options.w**             | `number`                                         | –        | —       | Target width (keeps aspect). ([npm][1])                |
@@ -131,7 +131,7 @@ rembg({
 
 ## Usage of `returnMask` flag
 
-The library provides an option to return a mask of the image instead of the processed image. This is controlled by the `returnMask` parameter. 
+The library provides an option to return a mask of the image instead of the processed image. This is controlled by the `returnMask` parameter.
 When set to `true`, the function returns a mask. By default (if omitted), this parameter is set to `false`.
 
 ### Code Snippet
@@ -173,8 +173,8 @@ rembg({
     onDownloadProgress,
     onUploadProgress,
     options: {
-        w: 1000, 
-        h: 760 // When both `w` and `h` are provided, RemBG will find the best dimensions that fit within the requested width and height while preserving the aspect ratio. 
+        w: 1000,
+        h: 760 // When both `w` and `h` are provided, RemBG will find the best dimensions that fit within the requested width and height while preserving the aspect ratio.
             // If you want to guarantee the exact size, set `exact_resize: true`.
         // exact_resize: true !!! be careful it can cause distortion !!!
     }
