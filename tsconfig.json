@@ -6,7 +6,8 @@
         "declaration": true,
         "outDir": "./dist",
         "types": [
-            "node", "jest"
+            "node", 
+            "jest",
         ],
         "strict": true,
         "noImplicitAny": false

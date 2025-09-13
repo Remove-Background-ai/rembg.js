@@ -350,5 +350,199 @@ describe('rembg', () => {
     axiosMock.mockRestore();
   });
 
+  // Tests for new parameters: angle, expand, bg_color
+  describe('New parameters (angle, expand, bg_color)', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should send angle parameter when provided', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {
+          angle: 90,
+        },
+      });
+
+      expect(appendSpy).toHaveBeenCalledWith('angle', '90');
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should NOT send angle parameter when not provided', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {},
+      });
+
+      expect(appendSpy).not.toHaveBeenCalledWith('angle', expect.anything());
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should send expand parameter when explicitly provided as true', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {
+          expand: true,
+        },
+      });
+
+      expect(appendSpy).toHaveBeenCalledWith('expand', 'true');
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should send expand parameter when explicitly provided as false', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {
+          expand: false,
+        },
+      });
+
+      expect(appendSpy).toHaveBeenCalledWith('expand', 'false');
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should send expand parameter with default value "true" when not provided', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {},
+      });
+
+      expect(appendSpy).toHaveBeenCalledWith('expand', 'true');
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should send bg_color parameter when provided', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {
+          bg_color: 'blue',
+        },
+      });
+
+      expect(appendSpy).toHaveBeenCalledWith('bg_color', 'blue');
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should send bg_color parameter with hex color when provided', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {
+          bg_color: '#FF5733',
+        },
+      });
+
+      expect(appendSpy).toHaveBeenCalledWith('bg_color', '#FF5733');
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should NOT send bg_color parameter when not provided', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {},
+      });
+
+      expect(appendSpy).not.toHaveBeenCalledWith('bg_color', expect.anything());
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+
+    it('should send all three new parameters when all are provided', async () => {
+      const appendSpy = jest.spyOn(FormData.prototype, 'append');
+      const axiosMock = jest.spyOn(axios, 'request').mockResolvedValueOnce({
+        data: Buffer.from('image data'),
+      });
+
+      await rembg({
+        apiKey: 'your-api-key',
+        inputImage: 'path/to/image.png',
+        onUploadProgress: () => {},
+        onDownloadProgress: () => {},
+        options: {
+          angle: 45,
+          expand: false,
+          bg_color: 'red',
+        },
+      });
+
+      expect(appendSpy).toHaveBeenCalledWith('angle', '45');
+      expect(appendSpy).toHaveBeenCalledWith('expand', 'false');
+      expect(appendSpy).toHaveBeenCalledWith('bg_color', 'red');
+      axiosMock.mockRestore();
+      appendSpy.mockRestore();
+    });
+  });
+
 
 });
