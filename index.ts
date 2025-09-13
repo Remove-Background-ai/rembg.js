@@ -61,7 +61,7 @@ export const rembg = async ({
     h = 0, 
     exact_resize = false,
     angle,
-    expand = true,
+    expand,
     bg_color
   } = options || {};
 
@@ -106,6 +106,8 @@ export const rembg = async ({
   }
   if (expand !== undefined) {
     data.append('expand', expand.toString());
+  } else {
+    data.append('expand', 'true'); // Default value when not provided
   }
   if (bg_color !== undefined) {
     data.append('bg_color', bg_color);
