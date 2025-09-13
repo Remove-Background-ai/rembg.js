@@ -9,6 +9,7 @@ A simple, **FREE** AI background removal tool for **Node.js**. Currently, this i
 ## 🚨 Minimum Node.js Version 🚨
 To use **@remove-background-ai/rembg.js**, you **must** have Node.js **v18.17.0 or higher** installed.
 
+> ⚠️ **WARNING**: Node.js v18 is already out of support. It's **strongly recommended** to use at least **Node.js v20** or higher for better security, performance, and long-term support.
 
 ## Requirements
 Get your **FREE** API Key from the https://www.rembg.com/api-usage
@@ -33,6 +34,9 @@ npm i --save @remove-background-ai/rembg.js
 | **options.w**             | `number`                                         | –        | —       | Target width (keeps aspect). ([npm][1])                |
 | **options.h**             | `number`                                         | –        | —       | Target height (keeps aspect). ([npm][1])               |
 | **options.exact\_resize** | `boolean`                                        | –        | `false` | Force exact `w × h` (can distort). ([npm][1])          |
+| **options.angle**         | `number`                                         | –        | —       | Rotation angle in degrees. ([npm][1])                  |
+| **options.expand**        | `boolean`                                        | –        | `true`  | Add padding so rotated images aren't cropped. ([npm][1]) |
+| **options.bg\_color**     | `string`                                         | –        | —       | Optional solid background color in hex (e.g. #FFFFFFFF) or named color (e.g. "red", "blue"). ([npm][1]) |
 
 [1]: https://www.npmjs.com/package/%40remove-background-ai/rembg.js "@remove-background-ai/rembg.js - npm"
 
@@ -181,5 +185,31 @@ rembg({
 
 }).then(({ base64Image }) => {
     console.log(`✅🎉 Mask retrieved: ${base64Image}`);
+});
+```
+
+## Image Processing with New Parameters
+
+The library now supports advanced image processing options including rotation, padding, and background color customization:
+
+### Code Snippet
+
+```typescript
+rembg({
+    apiKey: API_KEY,
+    inputImage: './input.jpg',
+    onDownloadProgress,
+    onUploadProgress,
+    options: {
+        w: 800,
+        h: 600,
+        format: "WEBP",
+        angle: 90,                    // Rotate image 90 degrees
+        expand: true,                 // Add padding so rotated images aren't cropped
+        bg_color: "blue"              // Set background color (hex: "#FF5733" or named: "blue")
+    }
+}).then(({ outputImagePath, cleanup }) => {
+    console.log(`✅🎉 Background removed with rotation and custom background: ${outputImagePath}`);
+    cleanup();
 });
 ```

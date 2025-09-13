@@ -12,6 +12,9 @@ type Options = {
   h: number;
   exact_resize?: boolean;
   format?: "png" | "PNG" | "webp" | "WEBP";
+  angle?: number; // Rotation angle in degrees
+  expand?: boolean; // Add padding so rotated images aren't cropped
+  bg_color?: string; // Optional solid background color in hex (e.g. #FFFFFFFF) or named color (e.g. "red", "blue")
 }
 const D_FORMAT = 'WEBP'
 /**
@@ -28,6 +31,9 @@ const D_FORMAT = 'WEBP'
  * @param options.h - The height of the output image.
  * @param options.exact_resize - If true, the output image will be resized to the specified width and height.
  * @param options.format - format the image to target format, by default it is WEBP.
+ * @param options.angle - Rotation angle in degrees (optional).
+ * @param options.expand - Add padding so rotated images aren't cropped (optional, defaults to true).
+ * @param options.bg_color - Optional solid background color in hex (e.g. #FFFFFFFF) or named color (e.g. "red", "blue").
  * @returns If returnBase64 is true, returns an object with the base64Image property containing the Base64 string of the output image.
  *          If returnBase64 is false, returns an object with the outputImagePath property containing the path to the output image file,
  *          and the cleanup function to delete the temporary file.
@@ -53,7 +59,10 @@ export const rembg = async ({
     returnBase64 = false,
     w = 0, 
     h = 0, 
-    exact_resize = false 
+    exact_resize = false,
+    angle,
+    expand = true,
+    bg_color
   } = options || {};
 
   const url = "https://api.rembg.com/rmbg";
@@ -90,10 +99,23 @@ export const rembg = async ({
   data.append('h', h);
   data.append('mask', returnMask.toString());
   data.append('return_base64', returnBase64.toString());
+  
+  // Add new parameters if provided
+  if (angle !== undefined) {
+    data.append('angle', angle.toString());
+  }
+  if (expand !== undefined) {
+    data.append('expand', expand.toString());
+  }
+  if (bg_color !== undefined) {
+    data.append('bg_color', bg_color);
+  }
+  
   const format = options?.format
   if(format && format.toLowerCase() === "png" || format?.toLowerCase() === "webp") {
     data.append('format', options?.format)
   }
+
 
   const config = {
     method: 'post',
