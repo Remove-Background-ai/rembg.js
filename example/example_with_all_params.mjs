@@ -21,7 +21,7 @@ rembg({
         w: 800,                    // Width of output image
         h: 600,                    // Height of output image
         exact_resize: false,       // Keep aspect ratio (be careful if true, can cause distortion)
-        format: "WEBP",             // Output format (PNG, WEBP)
+        format: "PNG",             // Output format (PNG, WEBP)
         
         // Return type options
         returnMask: false,         // Return alpha matte instead of processed image
